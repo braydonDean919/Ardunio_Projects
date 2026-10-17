@@ -1,0 +1,37 @@
+import random
+
+import serial
+import time
+ser = serial.Serial('COM12', 9600)  
+winNum = 0
+loseNum = 0
+opLoseNum = 0
+opWinNum = 0
+outcomes = {
+    'ROCK': {'PAPER':'lose', 'SCISSORS':'win', 'ROCK':'draw'},
+    'PAPER': {'SCISSORS':'lose', 'ROCK':'win', 'PAPER':'draw'},
+    'SCISSORS': {'ROCK':'lose', 'PAPER':'win', 'SCISSORS':'draw'}
+}
+CPU_choice = ['ROCK', 'PAPER', 'SCISSORS']
+random_value = random.choice(CPU_choice)
+while True:
+    if ser.in_waiting > 0:
+        line = ser.readline().decode('utf-8').rstrip()
+        print(f"You Chose: {line}")
+        print(f"CPU choice: {random_value}")
+        result = outcomes[line][random_value]
+        print(f"Result: {result}")
+        if result == 'win':
+            winNum += 1
+            opLoseNum += 1
+        elif result == 'lose':
+            loseNum += 1
+            opWinNum += 1
+        if winNum == 3 or opLoseNum == 2:
+            print("You won the game!")
+            break
+        if loseNum == 3 or opWinNum == 2:
+            print("You lost the game!")
+            break
+    time.sleep(0.1)
+
