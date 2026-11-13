@@ -5,10 +5,6 @@
 SoftwareSerial bluetooth(6,5);
 ArduinoLEDMatrix matrix;
 
-const int joystickX = A0;
-const int joystickY = A1;
-const int buttonA=2;
-const int buttonB=3;
 
 void setup() {
   bluetooth.begin(9600);
@@ -24,17 +20,11 @@ void setup() {
   matrix.println(text);
   matrix.endText();
   matrix.endDraw();
-  pinMode(buttonA, INPUT_PULLUP);
-  pinMode(buttonB, INPUT_PULLUP);
   delay(2000);
 }
 
 void loop() {
-  int x = analogRead(joystickX);
-  int y = analogRead(joystickY);
-  int a = !digitalRead(buttonA);
-  int b = !digitalRead(buttonB);
-  // Make it scroll!
+  // Make the matrix scroll!
   matrix.beginDraw();
   matrix.stroke(0xFFFFFFFF);
   matrix.textScrollSpeed(50);
